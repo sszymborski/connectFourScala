@@ -1,5 +1,7 @@
 package connectFour
 
-object Game {
+object Game extends App {
+
+  println("Hello from Scala!")
 
 }

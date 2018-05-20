@@ -1,0 +1,5 @@
+package connectFour
+
+class AI {
+
+}
