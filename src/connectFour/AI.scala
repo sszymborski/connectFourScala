@@ -11,20 +11,20 @@ object AI {
   def checkWin() = Game.checkWin()
   def gravity(column: Int) = Game.gravity(column)
 
-  def makeMove() : Int = {
+  def makeRandomMove() : Int = {
 
     val r = scala.util.Random
     r.nextInt(7)
   }
 
-  def makeMove(board: Array[Array[Int]]) : Int = {
+  def makeMove() : Int = {
     val alpha = -1000000000L
 
     for {
-      i <- 0 to WIDTH if board(i)(0) == NEUTRAL
+      i <- 0 to WIDTH if Game.board(i)(0) == NEUTRAL
     } yield {
-      val newBoard = board
-      newBoard(i).update(gravity(i), YELLOW) //TODO uzyskać index przez jakiś map i sum
+      val newBoard = Game.board
+      newBoard(i).update(gravity(i), YELLOW)
     }
     0
   }
