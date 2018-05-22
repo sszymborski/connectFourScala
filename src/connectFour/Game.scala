@@ -133,7 +133,7 @@ object Game extends App {
 
   Gui.display()
 
-  for(i <- 1 to 42){
+  for(i <- 1 to 21){
     makeMove()
     Gui.display()
     checkWin()

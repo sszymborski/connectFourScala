@@ -8,6 +8,8 @@ object AI {
   val NEUTRAL = Game.NEUTRAL
   val WIDTH = Game.WIDTH
   val HEIGHT = Game.HEIGHT
+  val depth = 5
+  val infinity = 1000000000L
 
   def checkWin() = Game.checkWin()
 
@@ -20,15 +22,21 @@ object AI {
   }
 
   def makeMove(): Int = {
-    val alpha = -1000000000L
+    val alpha = -infinity
 
-    for {
+    val results = for {
       i <- 0 to WIDTH if Game.board(i)(0) == NEUTRAL
     } yield {
       val newBoard = Game.board
       newBoard(i).update(gravity(i), YELLOW)
+      alphabeta(false, depth - 1, alpha, infinity)
     }
-    0
+
+    results.indexOf(results.max)
+  }
+
+  def alphabeta(ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
+    10L
   }
 }
 
