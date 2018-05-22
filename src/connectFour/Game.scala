@@ -100,8 +100,8 @@ object Game extends App {
       NEUTRAL
   }
 
-  def gravity(column: Int): Int = {
-    board(column).map {
+  def gravity(table: Array[Array[Int]], column: Int): Int = {
+    table(column).map {
       case NEUTRAL => 1
       case _ => 0
     }.sum - 1
@@ -109,7 +109,7 @@ object Game extends App {
 
   def makeMove(): Unit = {
     val column = Gui.getInput()
-    val row = gravity(column)
+    val row = gravity(board, column)
     if (row < 0)
       makeMove()
     else
@@ -117,12 +117,12 @@ object Game extends App {
   }
 
   def AImakeMove(): Unit = {
-    val column = AI.makeRandomMove()
-    val row = gravity(column)
+    val column = AI.makeMove()
+    val row = gravity(board, column)
     if (row < 0)
       AImakeMove()
     else
-      board(column)(row) = YELLOW
+    board(column)(row) = YELLOW
   }
 
   checkWin(board)
