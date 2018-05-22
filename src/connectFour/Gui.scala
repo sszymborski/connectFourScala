@@ -8,7 +8,7 @@ object Gui {
 
 
   def display() = {
-    for(j <- 0 until Game.HEIGHT) {
+    for (j <- 0 until Game.HEIGHT) {
       for (i <- 0 until Game.WIDTH) {
         print(Game.board(i)(j) + "\t")
       }

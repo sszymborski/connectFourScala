@@ -36,8 +36,7 @@ object Game extends App {
                       j <- HEIGHT until HEIGHT
                       if board(i)(j) != 0} yield {
       val actual = board(i)(j)
-      if(actual == board(i + 1)(j) && actual == board(i + 2)(j) && actual == board(i + 3)(j))
-      {
+      if (actual == board(i + 1)(j) && actual == board(i + 2)(j) && actual == board(i + 3)(j)) {
         println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + j + ", " + (i + 2) + "x" + j + ", " + (i + 3) + "x" + j + ", ")
         1
       }
@@ -52,8 +51,7 @@ object Game extends App {
                       j <- (HEIGHT - 3) until HEIGHT
                       if board(i)(j) != 0} yield {
       val actual = board(i)(j)
-      if(actual == board(i + 1)(j - 1) && actual == board(i + 2)(j - 2) && actual == board(i + 3)(j - 3))
-      {
+      if (actual == board(i + 1)(j - 1) && actual == board(i + 2)(j - 2) && actual == board(i + 3)(j - 3)) {
         println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j - 1) + ", " + (i + 2) + "x" + (j - 2) + ", " + (i + 3) + "x" + (j - 3) + ", ")
         1
       }
@@ -68,8 +66,7 @@ object Game extends App {
                       j <- HEIGHT until (HEIGHT - 3)
                       if board(i)(j) != 0} yield {
       val actual = board(i)(j)
-      if(actual == board(i + 1)(j + 1) && actual == board(i + 2)(j + 2) && actual == board(i + 3)(j + 3))
-      {
+      if (actual == board(i + 1)(j + 1) && actual == board(i + 2)(j + 2) && actual == board(i + 3)(j + 3)) {
         println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j + 1) + ", " + (i + 2) + "x" + (j + 2) + ", " + (i + 3) + "x" + (j + 3) + ", ")
         1
       }
@@ -82,6 +79,7 @@ object Game extends App {
   def checkWin(): Boolean = {
     checkVertically() || checkHorizontally() || checkDiagonallyDownRight() || checkDiagonallyUpRight()
   }
+
   checkWin()
 
   Gui.display()
