@@ -34,18 +34,20 @@ object AI {
   def makeMove(): Int = {
     val alpha = -infinity
 
+    val table = Game.board.map(_.clone())
+
     val results = for {
-      i <- 0 until WIDTH if Game.board(i)(0) == NEUTRAL
+      i <- 0 until WIDTH if table(i)(0) == NEUTRAL
     } yield {
-      val board = Game.board.clone()
-      board(i).update(gravity(board, i), YELLOW)
-      alphabeta(board, false, depth - 1, alpha, infinity)
+      table(i)(gravity(table, i)) = YELLOW
+      alphabeta(table, false, depth - 1, alpha, infinity)
     }
 
     results.indexOf(results.max)
   }
 
   def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
+
     val freeSpace = {
       for {
         i <- 0 until WIDTH
@@ -91,7 +93,7 @@ object AI {
       if(iter < 0 || alpha >= beta || board(iter)(0) == NEUTRAL)
         alpha
       else {
-        val newBoard = board.clone()
+        val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), YELLOW)
         val alphaResult = alphabeta(newBoard, false, currDepth - 1, alpha, beta)
         moveAIrec(board, currDepth, math.max(alpha, alphaResult), beta, iter - 1)
@@ -107,7 +109,7 @@ object AI {
       if(iter < 0 || alpha >= beta || board(iter)(0) == NEUTRAL)
         beta
       else {
-        val newBoard = board.clone()
+        val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), RED)
         val betaResult = alphabeta(newBoard, true, currDepth - 1, alpha, beta)
         movePlayerRec(board, currDepth, alpha, math.min(beta, betaResult), iter - 1)
@@ -377,7 +379,7 @@ object AI {
             value
           else{
             val actColor = board(i)(j)
-            val oppColor = if (actColor == RED) YELLOW else RED
+            val oppColor = {if (actColor == RED) YELLOW else RED}
 
             val horizontalValue1 = horizontal1(board, value, i, j, actColor, oppColor)
             val upRightValue1 = upRight1(board, horizontalValue1, i, j, actColor, oppColor)

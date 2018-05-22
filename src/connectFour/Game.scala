@@ -121,8 +121,10 @@ object Game extends App {
     val row = gravity(board, column)
     if (row < 0)
       AImakeMove()
-    else
-    board(column)(row) = YELLOW
+    else {
+      board(column)(row) = YELLOW
+      println(row + " " + column)
+    }
   }
 
   checkWin(board)
