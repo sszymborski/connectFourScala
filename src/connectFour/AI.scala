@@ -27,16 +27,22 @@ object AI {
     val results = for {
       i <- 0 to WIDTH if Game.board(i)(0) == NEUTRAL
     } yield {
-      val newBoard = Game.board
-      newBoard(i).update(gravity(i), YELLOW)
-      alphabeta(false, depth - 1, alpha, infinity)
+      val board = Game.board
+      board(i).update(gravity(i), YELLOW)
+      alphabeta(board, false, depth - 1, alpha, infinity)
     }
 
     results.indexOf(results.max)
   }
 
-  def alphabeta(ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
+  def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
+
     10L
+  }
+
+  def evaluate(board: Array[Array[Int]]) : Int = {
+    //TODO
+    0
   }
 }
 
