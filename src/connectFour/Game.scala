@@ -96,7 +96,7 @@ object Game extends App {
   }
 
   def checkWin(): Int = {
-    if (checkVertically(YELLOW) || checkHorizontally(RED) || checkDiagonallyDownRight(RED) || checkDiagonallyUpRight(RED))
+    if (checkVertically(RED) || checkHorizontally(RED) || checkDiagonallyDownRight(RED) || checkDiagonallyUpRight(RED))
       RED
     else if (checkVertically(YELLOW) || checkHorizontally(YELLOW) || checkDiagonallyDownRight(YELLOW) || checkDiagonallyUpRight(YELLOW))
       YELLOW
