@@ -15,13 +15,13 @@ object Game extends App {
   val board = Array.ofDim[Int](WIDTH, HEIGHT)
   val whoPlays = true
 
-  def checkVertically(color: Int): Boolean = {
+  def checkVertically(table: Array[Array[Int]], color: Int): Boolean = {
     val result = for {i <- 0 until WIDTH
                       j <- (HEIGHT - 3) until HEIGHT
-                      if board(i)(j) != NEUTRAL} yield {
-      if (board(i)(j) == color) {
-        val actual = board(i)(j)
-        if ((actual == board(i)(j - 1)) && (actual == board(i)(j - 2)) && (actual == board(i)(j - 3))) {
+                      if table(i)(j) != NEUTRAL} yield {
+      if (table(i)(j) == color) {
+        val actual = table(i)(j)
+        if ((actual == table(i)(j - 1)) && (actual == table(i)(j - 2)) && (actual == table(i)(j - 3))) {
           println("Win by " + i + "x" + j + ", " + i + "x" + (j - 1) + ", " + i + "x" + (j - 2) + ", " + i + "x" + (j - 3) + ", ")
           1
         }
@@ -34,13 +34,13 @@ object Game extends App {
     result.sum > 0
   }
 
-  def checkHorizontally(color: Int): Boolean = {
+  def checkHorizontally(table: Array[Array[Int]], color: Int): Boolean = {
     val result = for {i <- 0 until (WIDTH - 3)
                       j <- HEIGHT until HEIGHT
-                      if board(i)(j) != NEUTRAL} yield {
-      if (board(i)(j) == color) {
-        val actual = board(i)(j)
-        if (actual == board(i + 1)(j) && actual == board(i + 2)(j) && actual == board(i + 3)(j)) {
+                      if table(i)(j) != NEUTRAL} yield {
+      if (table(i)(j) == color) {
+        val actual = table(i)(j)
+        if (actual == table(i + 1)(j) && actual == table(i + 2)(j) && actual == table(i + 3)(j)) {
           println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + j + ", " + (i + 2) + "x" + j + ", " + (i + 3) + "x" + j + ", ")
           1
         }
@@ -53,13 +53,13 @@ object Game extends App {
     result.sum > 0
   }
 
-  def checkDiagonallyUpRight(color: Int): Boolean = {
+  def checkDiagonallyUpRight(table: Array[Array[Int]], color: Int): Boolean = {
     val result = for {i <- 0 until (WIDTH - 3)
                       j <- (HEIGHT - 3) until HEIGHT
-                      if board(i)(j) != NEUTRAL} yield {
-      if (board(i)(j) == color) {
-        val actual = board(i)(j)
-        if (actual == board(i + 1)(j - 1) && actual == board(i + 2)(j - 2) && actual == board(i + 3)(j - 3)) {
+                      if table(i)(j) != NEUTRAL} yield {
+      if (table(i)(j) == color) {
+        val actual = table(i)(j)
+        if (actual == table(i + 1)(j - 1) && actual == table(i + 2)(j - 2) && actual == table(i + 3)(j - 3)) {
           println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j - 1) + ", " + (i + 2) + "x" + (j - 2) + ", " + (i + 3) + "x" + (j - 3) + ", ")
           1
         }
@@ -72,13 +72,13 @@ object Game extends App {
     result.sum > 0
   }
 
-  def checkDiagonallyDownRight(color: Int): Boolean = {
+  def checkDiagonallyDownRight(table: Array[Array[Int]], color: Int): Boolean = {
     val result = for {i <- 0 until (WIDTH - 3)
                       j <- HEIGHT until (HEIGHT - 3)
-                      if board(i)(j) != NEUTRAL} yield {
-      if (board(i)(j) == color) {
-        val actual = board(i)(j)
-        if (actual == board(i + 1)(j + 1) && actual == board(i + 2)(j + 2) && actual == board(i + 3)(j + 3)) {
+                      if table(i)(j) != NEUTRAL} yield {
+      if (table(i)(j) == color) {
+        val actual = table(i)(j)
+        if (actual == table(i + 1)(j + 1) && actual == table(i + 2)(j + 2) && actual == table(i + 3)(j + 3)) {
           println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j + 1) + ", " + (i + 2) + "x" + (j + 2) + ", " + (i + 3) + "x" + (j + 3) + ", ")
           1
         }
@@ -91,10 +91,10 @@ object Game extends App {
     result.sum > 0
   }
 
-  def checkWin(): Int = {
-    if (checkVertically(RED) || checkHorizontally(RED) || checkDiagonallyDownRight(RED) || checkDiagonallyUpRight(RED))
+  def checkWin(table: Array[Array[Int]]): Int = {
+    if (checkVertically(table, RED) || checkHorizontally(table, RED) || checkDiagonallyDownRight(table, RED) || checkDiagonallyUpRight(table, RED))
       RED
-    else if (checkVertically(YELLOW) || checkHorizontally(YELLOW) || checkDiagonallyDownRight(YELLOW) || checkDiagonallyUpRight(YELLOW))
+    else if (checkVertically(table, YELLOW) || checkHorizontally(table, YELLOW) || checkDiagonallyDownRight(table, YELLOW) || checkDiagonallyUpRight(table, YELLOW))
       YELLOW
     else
       NEUTRAL
@@ -125,7 +125,7 @@ object Game extends App {
       board(column)(row) = YELLOW
   }
 
-  checkWin()
+  checkWin(board)
 
   Gui.display()
 
@@ -133,10 +133,10 @@ object Game extends App {
     for (i <- 1 to 21) {
       makeMove()
       Gui.display()
-      if (checkWin() != NEUTRAL) break
+      if (checkWin(board) != NEUTRAL) break
       AImakeMove()
       Gui.display()
-      if (checkWin() != NEUTRAL) break
+      if (checkWin(board) != NEUTRAL) break
     }
   }
 
