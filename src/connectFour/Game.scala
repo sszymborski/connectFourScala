@@ -6,11 +6,11 @@ object Game extends App {
 
   println("Hello from Scala!")
 
-  val RED = 1
-  val YELLOW = 2
-  val WIDTH = 7
-  val HEIGHT = 6
-  val NEUTRAL = 0
+  val RED: Int = 1
+  val YELLOW: Int = 2
+  val WIDTH: Int = 7
+  val HEIGHT: Int = 6
+  val NEUTRAL: Int = 0
 
   val board = Array.ofDim[Int](WIDTH, HEIGHT)
   val whoPlays = true
