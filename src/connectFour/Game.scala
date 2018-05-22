@@ -111,10 +111,38 @@ object Game extends App {
     }.sum - 1
   }
 
+  def makeMove() : Unit = {
+    val column = Gui.getInput()
+    val row = gravity(column)
+    if(row < 0)
+      makeMove()
+    else
+      board(column)(row) = RED
+  }
+
+  def AImakeMove() : Unit = {
+    val column = AI.makeRandomMove()
+    val row = gravity(column)
+    if(row < 0)
+      AImakeMove()
+    else
+      board(column)(row) = YELLOW
+  }
+
   checkWin()
 
   Gui.display()
-  board(Gui.getInput())(0) = RED
-  Gui.display()
+
+  for(i <- 1 to 42){
+    makeMove()
+    Gui.display()
+    checkWin()
+    AImakeMove()
+    Gui.display()
+    checkWin()
+  }
+
 
 }
+
+

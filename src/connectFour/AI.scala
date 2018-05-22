@@ -8,16 +8,18 @@ object AI {
   val NEUTRAL = Game.NEUTRAL
   val WIDTH = Game.WIDTH
   val HEIGHT = Game.HEIGHT
+
   def checkWin() = Game.checkWin()
+
   def gravity(column: Int) = Game.gravity(column)
 
-  def makeRandomMove() : Int = {
+  def makeRandomMove(): Int = {
 
     val r = scala.util.Random
     r.nextInt(7)
   }
 
-  def makeMove() : Int = {
+  def makeMove(): Int = {
     val alpha = -1000000000L
 
     for {
