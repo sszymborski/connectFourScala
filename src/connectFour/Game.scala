@@ -1,5 +1,7 @@
 package connectFour
 
+import connectFour.AI.NEUTRAL
+
 object Game extends App {
 
   println("Hello from Scala!")
@@ -81,7 +83,12 @@ object Game extends App {
     checkVertically() || checkHorizontally() || checkDiagonallyDownRight() || checkDiagonallyUpRight()
   }
 
-
+  def gravity(board: Array[Array[Int]], column: Int) : Int = {
+    board(column).map {
+      case NEUTRAL => 1
+      case _ => 0
+    }.sum - 1
+  }
 
   checkWin()
 
