@@ -36,11 +36,11 @@ object AI {
   }
 
   def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
-    
+
     10L
   }
 
-  def evaluate(board: Array[Array[Int]]) : Long = {
+  def evaluate(board: Array[Array[Int]]): Long = {
     //TODO
     0L
   }

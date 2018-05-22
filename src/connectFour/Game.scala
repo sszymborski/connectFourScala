@@ -1,14 +1,10 @@
 package connectFour
 
-import connectFour.AI.NEUTRAL
+import scala.util.control.Breaks._
 
 object Game extends App {
 
   println("Hello from Scala!")
-
-  //TODO główna pętla gry, plansza (board)
-  //TODO przyjmowanie ruchów od gracza (gui.getMove(board))
-  //TODO prośba o ruch do AI (AI.makeMove(board))
 
   val RED = 1
   val YELLOW = 2
@@ -111,19 +107,19 @@ object Game extends App {
     }.sum - 1
   }
 
-  def makeMove() : Unit = {
+  def makeMove(): Unit = {
     val column = Gui.getInput()
     val row = gravity(column)
-    if(row < 0)
+    if (row < 0)
       makeMove()
     else
       board(column)(row) = RED
   }
 
-  def AImakeMove() : Unit = {
+  def AImakeMove(): Unit = {
     val column = AI.makeRandomMove()
     val row = gravity(column)
-    if(row < 0)
+    if (row < 0)
       AImakeMove()
     else
       board(column)(row) = YELLOW
@@ -133,13 +129,15 @@ object Game extends App {
 
   Gui.display()
 
-  for(i <- 1 to 21){
-    makeMove()
-    Gui.display()
-    checkWin()
-    AImakeMove()
-    Gui.display()
-    checkWin()
+  breakable {
+    for (i <- 1 to 21) {
+      makeMove()
+      Gui.display()
+      if (checkWin() != NEUTRAL) break
+      AImakeMove()
+      Gui.display()
+      if (checkWin() != NEUTRAL) break
+    }
   }
 
 

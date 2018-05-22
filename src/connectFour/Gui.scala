@@ -2,11 +2,6 @@ package connectFour
 
 object Gui {
 
-  //TODO wyświetlanie kounikatów na konsolę
-  //TODO wyświetlanie planszy na konsolę
-  //TODO wczytywanie ruchu od gracza
-
-
   def display(): Unit = {
     for (i <- 1 to 5) {
       for (j <- 1 to 25)
