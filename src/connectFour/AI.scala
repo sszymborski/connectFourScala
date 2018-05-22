@@ -9,7 +9,7 @@ object AI {
   val WIDTH = Game.WIDTH
   val HEIGHT = Game.HEIGHT
   def checkWin() = Game.checkWin()
-  def gravity(board: Array[Array[Int]], column: Int) = Game.gravity(board, column)
+  def gravity(column: Int) = Game.gravity(column)
 
   def makeMove() : Int = {
 
@@ -24,7 +24,7 @@ object AI {
       i <- 0 to WIDTH if board(i)(0) == NEUTRAL
     } yield {
       val newBoard = board
-      newBoard(i).update(gravity(board, i), YELLOW) //TODO uzyskać index przez jakiś map i sum
+      newBoard(i).update(gravity(i), YELLOW) //TODO uzyskać index przez jakiś map i sum
     }
     0
   }
