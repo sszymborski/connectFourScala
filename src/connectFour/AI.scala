@@ -34,10 +34,7 @@ object AI {
       res
     }
 
-    val res = results.indexOf(results.max)
-    println(res)
-    println(results)
-    res
+    results.indexOf(results.max)
   }
 
   def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {

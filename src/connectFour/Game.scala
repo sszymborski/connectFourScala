@@ -16,7 +16,7 @@ object Game extends App {
 
   def checkVertically(table: Array[Array[Int]], color: Int, endCheck: Boolean): Boolean = {
     val result = for {i <- 0 until WIDTH
-                      j <- (HEIGHT - 3) until HEIGHT
+                      j <- (HEIGHT - 1) until (HEIGHT - 4) by -1
                       if table(i)(j) != NEUTRAL} yield {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
@@ -36,7 +36,7 @@ object Game extends App {
 
   def checkHorizontally(table: Array[Array[Int]], color: Int, endCheck: Boolean): Boolean = {
     val result = for {i <- 0 until (WIDTH - 3)
-                      j <- HEIGHT until HEIGHT
+                      j <- 0 until HEIGHT
                       if table(i)(j) != NEUTRAL} yield {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
@@ -56,7 +56,7 @@ object Game extends App {
 
   def checkDiagonallyUpRight(table: Array[Array[Int]], color: Int, endCheck: Boolean): Boolean = {
     val result = for {i <- 0 until (WIDTH - 3)
-                      j <- (HEIGHT - 3) until HEIGHT
+                      j <- (HEIGHT - 1) until (HEIGHT - 4) by -1
                       if table(i)(j) != NEUTRAL} yield {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
@@ -76,7 +76,7 @@ object Game extends App {
 
   def checkDiagonallyDownRight(table: Array[Array[Int]], color: Int, endCheck: Boolean): Boolean = {
     val result = for {i <- 0 until (WIDTH - 3)
-                      j <- HEIGHT until (HEIGHT - 3)
+                      j <- 0 until (HEIGHT - 3)
                       if table(i)(j) != NEUTRAL} yield {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
