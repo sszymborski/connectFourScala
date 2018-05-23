@@ -384,7 +384,7 @@ object AI {
       else {
         @tailrec
         def evaluateRecJ(board: Array[Array[Int]], value: Long, j: Int): Long = {
-          if(j <= 0 || board(i)(j) == NEUTRAL)
+          if(j < 0 || board(i)(j) == NEUTRAL)
             value
           else{
             val actColor = board(i)(j)
