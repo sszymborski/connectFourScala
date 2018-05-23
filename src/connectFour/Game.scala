@@ -3,9 +3,6 @@ package connectFour
 import scala.util.control.Breaks._
 
 object Game extends App {
-
-  println("Hello from Scala!")
-
   val RED: Int = 1
   val YELLOW: Int = 2
   val WIDTH: Int = 7
@@ -21,7 +18,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if ((actual == table(i)(j - 1)) && (actual == table(i)(j - 2)) && (actual == table(i)(j - 3))) {
-          if(endCheck)
+          if (endCheck)
             println("Win by " + i + "x" + j + ", " + i + "x" + (j - 1) + ", " + i + "x" + (j - 2) + ", " + i + "x" + (j - 3) + ", ")
           1
         }
@@ -41,7 +38,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j) && actual == table(i + 2)(j) && actual == table(i + 3)(j)) {
-          if(endCheck)
+          if (endCheck)
             println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + j + ", " + (i + 2) + "x" + j + ", " + (i + 3) + "x" + j + ", ")
           1
         }
@@ -61,7 +58,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j - 1) && actual == table(i + 2)(j - 2) && actual == table(i + 3)(j - 3)) {
-          if(endCheck)
+          if (endCheck)
             println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j - 1) + ", " + (i + 2) + "x" + (j - 2) + ", " + (i + 3) + "x" + (j - 3) + ", ")
           1
         }
@@ -81,7 +78,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j + 1) && actual == table(i + 2)(j + 2) && actual == table(i + 3)(j + 3)) {
-          if(endCheck)
+          if (endCheck)
             println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j + 1) + ", " + (i + 2) + "x" + (j + 2) + ", " + (i + 3) + "x" + (j + 3) + ", ")
           1
         }
@@ -111,7 +108,7 @@ object Game extends App {
   }
 
   def makeMove(): Unit = {
-    val column = Gui.getInput()
+    val column = Gui.getInput
     val row = gravity(board, column)
     if (row < 0)
       makeMove()
@@ -126,26 +123,21 @@ object Game extends App {
       AImakeMove()
     else {
       board(column)(row) = YELLOW
-      println(row + " " + column)
     }
   }
-
-  checkWin(board)
 
   Gui.display()
 
   breakable {
-    for (i <- 1 to 21) {
+    for (_ <- 1 to 21) {
       makeMove()
       Gui.display()
-      if (checkWin(board, true) != NEUTRAL) break
+      if (checkWin(board, endCheck = true) != NEUTRAL) break
       AImakeMove()
       Gui.display()
-      if (checkWin(board, true) != NEUTRAL) break
+      if (checkWin(board, endCheck = true) != NEUTRAL) break
     }
   }
-
-
 }
 
 

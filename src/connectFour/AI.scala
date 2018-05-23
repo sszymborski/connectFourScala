@@ -20,6 +20,7 @@ object AI {
   val BADVALUE1: Long = -1L
 
   def checkWin(table: Array[Array[Int]]) = Game.checkWin(table)
+
   def gravity(board: Array[Array[Int]], column: Int) = Game.gravity(board, column)
 
   def makeMove(): Int = {
@@ -29,11 +30,8 @@ object AI {
     } yield {
       val table = Game.board.map(_.clone())
       table(i).update(gravity(table, i), YELLOW)
-      val res = alphabeta(table, false, depth - 1, alpha, infinity)
-      print(res + "\t")
-      res
+      alphabeta(table, false, depth - 1, alpha, infinity)
     }
-
     results.indexOf(results.max)
   }
 
@@ -46,7 +44,6 @@ object AI {
       case NEUTRAL => 1
       case _ => 0
     }.sum
-
     if (currDepth == 0 || freeSpace == 0) { //if end of searching
       evaluate(board)
     }
@@ -82,6 +79,7 @@ object AI {
         moveAIrec(board, currDepth, math.max(alpha, alphaResult), beta, iter - 1)
       }
     }
+
     moveAIrec(board, currDepth, alpha, beta, WIDTH - 1)
   }
 
@@ -97,6 +95,7 @@ object AI {
         movePlayerRec(board, currDepth, alpha, math.min(beta, betaResult), iter - 1)
       }
     }
+
     movePlayerRec(board, currDepth, alpha, beta, WIDTH - 1)
   }
 
@@ -283,7 +282,6 @@ object AI {
     else value
   }
 
-
   def horizontal4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i > 2) //horizontal 0-0-0-x
     {
@@ -366,6 +364,7 @@ object AI {
 
   def evaluate(board: Array[Array[Int]]): Long = {
     val value: Long = 0L
+
     @tailrec
     def evaluateRec(board: Array[Array[Int]], value: Long, i: Int): Long = {
       if (i >= WIDTH)
@@ -380,7 +379,6 @@ object AI {
             val oppColor = {
               if (actColor == RED) YELLOW else RED
             }
-
             val horizontalValue1 = horizontal1(board, value, i, j, actColor, oppColor)
             val upRightValue1 = upRight1(board, horizontalValue1, i, j, actColor, oppColor)
             val downRightValue1 = downRight1(board, upRightValue1, i, j, actColor, oppColor)
@@ -402,10 +400,12 @@ object AI {
             evaluateRecJ(board, verticalValue, j - 1)
           }
         }
+
         val valueJ = evaluateRecJ(board, value, HEIGHT - 1)
         evaluateRec(board, valueJ, i + 1)
       }
     }
+
     evaluateRec(board, value, 0)
   }
 }
