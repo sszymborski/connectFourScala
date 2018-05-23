@@ -40,10 +40,15 @@ object AI {
       i <- 0 until WIDTH if table(i)(0) == NEUTRAL
     } yield {
       table(i)(gravity(table, i)) = YELLOW
-      alphabeta(table, false, depth - 1, alpha, infinity)
+      val res = alphabeta(table, false, depth - 1, alpha, infinity)
+      print(res + "\t")
+      res
     }
 
-    results.indexOf(results.max)
+    val res = results.indexOf(results.max)
+    println(res)
+    println(results)
+    res
   }
 
   def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
@@ -90,11 +95,13 @@ object AI {
 //    }
     @tailrec
     def moveAIrec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
-      if(iter < 0 || alpha >= beta || board(iter)(0) == NEUTRAL)
+      if(iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
         alpha
       else {
         val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), YELLOW)
+//        println("moveAI")
+//        Gui.display2(newBoard)
         val alphaResult = alphabeta(newBoard, false, currDepth - 1, alpha, beta)
         moveAIrec(board, currDepth, math.max(alpha, alphaResult), beta, iter - 1)
       }
@@ -106,11 +113,13 @@ object AI {
   def movePlayer(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long): Long = {
     @tailrec
     def movePlayerRec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
-      if(iter < 0 || alpha >= beta || board(iter)(0) == NEUTRAL)
+      if(iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
         beta
       else {
         val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), RED)
+//        println("movePlayer")
+//        Gui.display2(newBoard)
         val betaResult = alphabeta(newBoard, true, currDepth - 1, alpha, beta)
         movePlayerRec(board, currDepth, alpha, math.min(beta, betaResult), iter - 1)
       }

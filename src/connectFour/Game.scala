@@ -22,7 +22,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if ((actual == table(i)(j - 1)) && (actual == table(i)(j - 2)) && (actual == table(i)(j - 3))) {
-          println("Win by " + i + "x" + j + ", " + i + "x" + (j - 1) + ", " + i + "x" + (j - 2) + ", " + i + "x" + (j - 3) + ", ")
+//          println("Win by " + i + "x" + j + ", " + i + "x" + (j - 1) + ", " + i + "x" + (j - 2) + ", " + i + "x" + (j - 3) + ", ")
           1
         }
         else
@@ -41,7 +41,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j) && actual == table(i + 2)(j) && actual == table(i + 3)(j)) {
-          println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + j + ", " + (i + 2) + "x" + j + ", " + (i + 3) + "x" + j + ", ")
+//          println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + j + ", " + (i + 2) + "x" + j + ", " + (i + 3) + "x" + j + ", ")
           1
         }
         else
@@ -60,7 +60,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j - 1) && actual == table(i + 2)(j - 2) && actual == table(i + 3)(j - 3)) {
-          println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j - 1) + ", " + (i + 2) + "x" + (j - 2) + ", " + (i + 3) + "x" + (j - 3) + ", ")
+//          println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j - 1) + ", " + (i + 2) + "x" + (j - 2) + ", " + (i + 3) + "x" + (j - 3) + ", ")
           1
         }
         else
@@ -79,7 +79,7 @@ object Game extends App {
       if (table(i)(j) == color) {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j + 1) && actual == table(i + 2)(j + 2) && actual == table(i + 3)(j + 3)) {
-          println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j + 1) + ", " + (i + 2) + "x" + (j + 2) + ", " + (i + 3) + "x" + (j + 3) + ", ")
+//          println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j + 1) + ", " + (i + 2) + "x" + (j + 2) + ", " + (i + 3) + "x" + (j + 3) + ", ")
           1
         }
         else
