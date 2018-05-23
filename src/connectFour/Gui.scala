@@ -8,46 +8,24 @@ object Gui {
         print("*")
       println(" ")
     }
+
+    val printBoard = Game.board.map(_.map{
+      case Game.RED => "R"
+      case Game.YELLOW => "Y"
+      case Game.NEUTRAL => "0"
+    })
+
     for (j <- 0 until Game.HEIGHT) {
-      for (i <- 0 until Game.WIDTH) {
-        if (Game.board(i)(j) == 1)
-          print("R" + "\t")
-        else if (Game.board(i)(j) == 2)
-          print("Y" + "\t")
-        else
-          print(Game.board(i)(j) + "\t")
-      }
+      for (i <- 0 until Game.WIDTH)
+          print(printBoard(i)(j) + "\t")
       println(" ")
     }
+
     for (i <- 1 to 5) {
       for (j <- 1 to 25)
         print("*")
       println(" ")
     }
-  }
-
-  def display2(board: Array[Array[Int]]): Unit = {
-//    for (i <- 1 to 5) {
-      for (j <- 1 to 25)
-        print("*")
-      println(" ")
-//    }
-    for (j <- 0 until Game.HEIGHT) {
-      for (i <- 0 until Game.WIDTH) {
-        if (board(i)(j) == 1)
-          print("R" + "\t")
-        else if (board(i)(j) == 2)
-          print("Y" + "\t")
-        else
-          print(board(i)(j) + "\t")
-      }
-      println(" ")
-    }
-//    for (i <- 1 to 5) {
-      for (j <- 1 to 25)
-        print("*")
-      println(" ")
-//    }
   }
 
   def getInput(): Int = {

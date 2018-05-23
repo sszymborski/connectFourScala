@@ -34,12 +34,11 @@ object AI {
   def makeMove(): Int = {
     val alpha = -infinity
 
-    val table = Game.board.map(_.clone())
-
     val results = for {
-      i <- 0 until WIDTH if table(i)(0) == NEUTRAL
+      i <- 0 until WIDTH if Game.board(i)(0) == NEUTRAL
     } yield {
-      table(i)(gravity(table, i)) = YELLOW
+      val table = Game.board.map(_.clone())
+      table(i).update(gravity(table, i), YELLOW)
       val res = alphabeta(table, false, depth - 1, alpha, infinity)
       print(res + "\t")
       res
@@ -86,13 +85,6 @@ object AI {
   }
 
   def moveAI(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long): Long = {
-//    for {
-//      i <- 0 until WIDTH if board(i)(0) == NEUTRAL
-//    } yield {
-//      val newBoard = board
-//      newBoard(i).update(gravity(i), YELLOW)
-//      val alphaResult = alphabeta(newBoard, false, currDepth - 1, alpha, beta)
-//    }
     @tailrec
     def moveAIrec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
       if(iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
@@ -100,8 +92,6 @@ object AI {
       else {
         val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), YELLOW)
-//        println("moveAI")
-//        Gui.display2(newBoard)
         val alphaResult = alphabeta(newBoard, false, currDepth - 1, alpha, beta)
         moveAIrec(board, currDepth, math.max(alpha, alphaResult), beta, iter - 1)
       }
@@ -118,8 +108,6 @@ object AI {
       else {
         val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), RED)
-//        println("movePlayer")
-//        Gui.display2(newBoard)
         val betaResult = alphabeta(newBoard, true, currDepth - 1, alpha, beta)
         movePlayerRec(board, currDepth, alpha, math.min(beta, betaResult), iter - 1)
       }
@@ -349,33 +337,6 @@ object AI {
 
   def evaluate(board: Array[Array[Int]]): Long = {
     val value: Long = 0L
-//    val forValue =
-//      for {i <- 0 until WIDTH
-//         j <- HEIGHT-1 to 0 by -1
-//         if board(i)(j) != NEUTRAL
-//      } yield {
-//
-//      val actColor = board(i)(j)
-//      val oppColor = if (actColor == RED) YELLOW else RED
-//
-//      val horizontalValue1 = horizontal1(board, value, i, j, actColor, oppColor)
-//      val upRightValue1 = upRight1(board, horizontalValue1, i, j, actColor, oppColor)
-//      val downRightValue1 = downRight1(board, upRightValue1, i, j, actColor, oppColor)
-//
-//      val horizontalValue2 = horizontal2(board, downRightValue1, i, j, actColor, oppColor)
-//      val upRightValue2 = upRight2(board, horizontalValue2, i, j, actColor, oppColor)
-//      val downRightValue2 = downRight2(board, upRightValue2, i, j, actColor, oppColor)
-//
-//      val horizontalValue3 = horizontal3(board, downRightValue2, i, j, actColor, oppColor)
-//      val upRightValue3 = upRight3(board, horizontalValue3, i, j, actColor, oppColor)
-//      val downRightValue3 = downRight3(board, upRightValue3, i, j, actColor, oppColor)
-//
-//      val horizontalValue4 = horizontal4(board, downRightValue3, i, j, actColor, oppColor)
-//      val upRightValue4 = upRight4(board, horizontalValue4, i, j, actColor, oppColor)
-//      val downRightValue4 = downRight4(board, upRightValue4, i, j, actColor, oppColor)
-//
-//      val verticalValue = vertical(board, downRightValue4, i, j, actColor, oppColor)
-//    }
 
     @tailrec
     def evaluateRec(board: Array[Array[Int]], value: Long, i: Int): Long = {
