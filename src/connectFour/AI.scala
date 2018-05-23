@@ -3,7 +3,6 @@ package connectFour
 import scala.annotation.tailrec
 
 object AI {
-
   val RED: Int = Game.RED
   val YELLOW: Int = Game.YELLOW
   val NEUTRAL: Int = Game.NEUTRAL
@@ -20,20 +19,11 @@ object AI {
   val BADVALUE2: Long = -10L
   val BADVALUE1: Long = -1L
 
-
   def checkWin(table: Array[Array[Int]]) = Game.checkWin(table)
-
   def gravity(board: Array[Array[Int]], column: Int) = Game.gravity(board, column)
-
-  def makeRandomMove(): Int = {
-
-    val r = scala.util.Random
-    r.nextInt(7)
-  }
 
   def makeMove(): Int = {
     val alpha = -infinity
-
     val results = for {
       i <- 0 until WIDTH if Game.board(i)(0) == NEUTRAL
     } yield {
@@ -51,7 +41,6 @@ object AI {
   }
 
   def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
-
     val freeSpace = {
       for {
         i <- 0 until WIDTH
@@ -87,7 +76,7 @@ object AI {
   def moveAI(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long): Long = {
     @tailrec
     def moveAIrec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
-      if(iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
+      if (iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
         alpha
       else {
         val newBoard = board.map(_.clone())
@@ -96,14 +85,13 @@ object AI {
         moveAIrec(board, currDepth, math.max(alpha, alphaResult), beta, iter - 1)
       }
     }
-
     moveAIrec(board, currDepth, alpha, beta, WIDTH - 1)
   }
 
   def movePlayer(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long): Long = {
     @tailrec
     def movePlayerRec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
-      if(iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
+      if (iter < 0 || alpha >= beta || board(iter)(0) != NEUTRAL)
         beta
       else {
         val newBoard = board.map(_.clone())
@@ -112,7 +100,6 @@ object AI {
         movePlayerRec(board, currDepth, alpha, math.min(beta, betaResult), iter - 1)
       }
     }
-
     movePlayerRec(board, currDepth, alpha, beta, WIDTH - 1)
   }
 
@@ -175,35 +162,46 @@ object AI {
     else value
   }
 
-
   def horizontal2(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i < WIDTH-2 && i > 0) //horizontal 0-x-?-?
+    if (i < WIDTH - 2 && i > 0) //horizontal 0-x-?-?
     {
-      if(board(i-1)(j) == 0 && board(i+1)(j) == actColor && board(i+2)(j) == actColor)
-        value + {if(actColor == YELLOW) VALUE3 else BADVALUE3} //0-x-1-1
-      else if(board(i-1)(j) == 0 && board(i+1)(j) == actColor && board(i+2)(j) == 0)
-        value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //0-x-1-0
-      else if(board(i-1)(j) == 0 && board(i+1)(j) == 0 && board(i+2)(j) != oppColor)
-        value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //0-x-0-0
+      if (board(i - 1)(j) == 0 && board(i + 1)(j) == actColor && board(i + 2)(j) == actColor)
+        value + {
+          if (actColor == YELLOW) VALUE3 else BADVALUE3
+        } //0-x-1-1
+      else if (board(i - 1)(j) == 0 && board(i + 1)(j) == actColor && board(i + 2)(j) == 0)
+        value + {
+          if (actColor == YELLOW) VALUE2 else BADVALUE2
+        } //0-x-1-0
+      else if (board(i - 1)(j) == 0 && board(i + 1)(j) == 0 && board(i + 2)(j) != oppColor)
+        value + {
+          if (actColor == YELLOW) VALUE1 else BADVALUE1
+        } //0-x-0-0
       else value
     }
     else value
   }
 
   def upRight2(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i < WIDTH-2 && i > 0) //horizontal 0-x-?-?
+    if (i < WIDTH - 2 && i > 0) //horizontal 0-x-?-?
     {
-      if(j > 1 && j < HEIGHT-1) //up-right 0-x-?-?
+      if (j > 1 && j < HEIGHT - 1) //up-right 0-x-?-?
       {
-        if(board(i-1)(j+1) == 0 && board(i+1)(j-1) == actColor && board(i+2)(j-2) == actColor)
-          value + {if(actColor == YELLOW) VALUE3 else BADVALUE3} //0-x-1-1
-        else if(board(i-1)(j+1) == 0 && board(i+1)(j-1) == actColor && board(i+2)(j-2) == 0)
-          value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //0-x-1-0
-        else if(board(i-1)(j+1) == 0 && board(i+1)(j-1) == 0 && board(i+2)(j-2) != oppColor)
-          value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //0-x-0-0
+        if (board(i - 1)(j + 1) == 0 && board(i + 1)(j - 1) == actColor && board(i + 2)(j - 2) == actColor)
+          value + {
+            if (actColor == YELLOW) VALUE3 else BADVALUE3
+          } //0-x-1-1
+        else if (board(i - 1)(j + 1) == 0 && board(i + 1)(j - 1) == actColor && board(i + 2)(j - 2) == 0)
+          value + {
+            if (actColor == YELLOW) VALUE2 else BADVALUE2
+          } //0-x-1-0
+        else if (board(i - 1)(j + 1) == 0 && board(i + 1)(j - 1) == 0 && board(i + 2)(j - 2) != oppColor)
+          value + {
+            if (actColor == YELLOW) VALUE1 else BADVALUE1
+          } //0-x-0-0
         else value
       }
-       else value
+      else value
     }
     else value
   }
@@ -229,26 +227,34 @@ object AI {
   }
 
   def horizontal3(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i < WIDTH-1 && i > 1) //horizontal 0-0-x-?
+    if (i < WIDTH - 1 && i > 1) //horizontal 0-0-x-?
     {
-      if(board(i-2)(j) != oppColor && board(i-1)(j) == 0 && board(i+1)(j) == actColor)
-        value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //0-0-x-1
-      else if(board(i-2)(j) != oppColor && board(i-1)(j) == 0 && board(i+1)(j) == 0)
-        value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //0-0-x-0
+      if (board(i - 2)(j) != oppColor && board(i - 1)(j) == 0 && board(i + 1)(j) == actColor)
+        value + {
+          if (actColor == YELLOW) VALUE2 else BADVALUE2
+        } //0-0-x-1
+      else if (board(i - 2)(j) != oppColor && board(i - 1)(j) == 0 && board(i + 1)(j) == 0)
+        value + {
+          if (actColor == YELLOW) VALUE1 else BADVALUE1
+        } //0-0-x-0
       else value
     }
     else value
   }
 
   def upRight3(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i < WIDTH-1 && i > 1) //horizontal 0-0-x-?
+    if (i < WIDTH - 1 && i > 1) //horizontal 0-0-x-?
     {
-      if(j > 0 && j < HEIGHT-2) //up-right 0-0-x-?
+      if (j > 0 && j < HEIGHT - 2) //up-right 0-0-x-?
       {
-        if(board(i-2)(j+2) != oppColor && board(i-1)(j+1) == 0 && board(i+1)(j-1) == actColor)
-          value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //0-0-x-1
-        else if(board(i-2)(j+2) != oppColor && board(i-1)(j+1) == 0 && board(i+1)(j-1) == 0)
-          value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //0-0-x-0
+        if (board(i - 2)(j + 2) != oppColor && board(i - 1)(j + 1) == 0 && board(i + 1)(j - 1) == actColor)
+          value + {
+            if (actColor == YELLOW) VALUE2 else BADVALUE2
+          } //0-0-x-1
+        else if (board(i - 2)(j + 2) != oppColor && board(i - 1)(j + 1) == 0 && board(i + 1)(j - 1) == 0)
+          value + {
+            if (actColor == YELLOW) VALUE1 else BADVALUE1
+          } //0-0-x-0
         else value
       }
       else value
@@ -257,16 +263,22 @@ object AI {
   }
 
   def downRight3(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i < WIDTH-1 && i > 1) //horizontal 0-0-x-?
+    if (i < WIDTH - 1 && i > 1) //horizontal 0-0-x-?
     {
-      if(j > 1 && j < HEIGHT-1) //down-right ?-?-x-0
+      if (j > 1 && j < HEIGHT - 1) //down-right ?-?-x-0
       {
-        if(board(i+1)(j+1) == 0 && board(i-1)(j-1) == actColor && board(i-2)(j-2) == actColor)
-          value + {if(actColor == YELLOW) VALUE3 else BADVALUE3} //0-x-1-1
-        else if(board(i+1)(j+1) == 0 && board(i-1)(j-1) == actColor && board(i-2)(j-2) == 0)
-          value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //0-x-1-0
-        else if(board(i+1)(j+1) == 0 && board(i-1)(j-1) == 0 && board(i-2)(j-2) != oppColor)
-          value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //0-x-0-0
+        if (board(i + 1)(j + 1) == 0 && board(i - 1)(j - 1) == actColor && board(i - 2)(j - 2) == actColor)
+          value + {
+            if (actColor == YELLOW) VALUE3 else BADVALUE3
+          } //0-x-1-1
+        else if (board(i + 1)(j + 1) == 0 && board(i - 1)(j - 1) == actColor && board(i - 2)(j - 2) == 0)
+          value + {
+            if (actColor == YELLOW) VALUE2 else BADVALUE2
+          } //0-x-1-0
+        else if (board(i + 1)(j + 1) == 0 && board(i - 1)(j - 1) == 0 && board(i - 2)(j - 2) != oppColor)
+          value + {
+            if (actColor == YELLOW) VALUE1 else BADVALUE1
+          } //0-x-0-0
         else value
       }
       else value
@@ -276,22 +288,26 @@ object AI {
 
 
   def horizontal4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i > 2) //horizontal 0-0-0-x
+    if (i > 2) //horizontal 0-0-0-x
     {
-      if(board(i-3)(j) != oppColor && board(i-2)(j) != oppColor && board(i-1)(j) == 0)
-        value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //0-0-0-x
+      if (board(i - 3)(j) != oppColor && board(i - 2)(j) != oppColor && board(i - 1)(j) == 0)
+        value + {
+          if (actColor == YELLOW) VALUE1 else BADVALUE1
+        } //0-0-0-x
       else value
     }
     else value
   }
 
   def upRight4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i > 2) //horizontal 0-0-0-x
+    if (i > 2) //horizontal 0-0-0-x
     {
-      if(j < HEIGHT-3) //up-right 0-0-0-x
+      if (j < HEIGHT - 3) //up-right 0-0-0-x
       {
-        if(board(i-3)(j+3) != oppColor && board(i-2)(j+2) != oppColor && board(i-1)(j+1) == 0)
-          value + {if(actColor == YELLOW) VALUE1 else BADVALUE1}
+        if (board(i - 3)(j + 3) != oppColor && board(i - 2)(j + 2) != oppColor && board(i - 1)(j + 1) == 0)
+          value + {
+            if (actColor == YELLOW) VALUE1 else BADVALUE1
+          }
         else value
       }
       else value
@@ -300,18 +316,26 @@ object AI {
   }
 
   def downRight4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(i > 2) //horizontal 0-0-0-x
+    if (i > 2) //horizontal 0-0-0-x
     {
-      if(j > 2) //down-right ?-?-?-x
+      if (j > 2) //down-right ?-?-?-x
       {
-        if(board(i-1)(j-1) == actColor && board(i-2)(j-2) == actColor && board(i-3)(j-3) == actColor)
-          value + {if(actColor == YELLOW) VALUE4 else BADVALUE4} //x-1-1-1
-        else if(board(i-1)(j-1) == actColor && board(i-2)(j-2) == actColor && board(i-3)(j-3) == 0)
-          value + {if(actColor == YELLOW) VALUE3 else BADVALUE3} //x-1-1-0
-        else if(board(i-1)(j-1) == actColor && board(i-2)(j-2) == 0 && board(i-3)(j-3) != oppColor)
-          value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //x-1-0-0
-        else if(board(i-1)(j-1) == 0 && board(i-2)(j-2) != oppColor && board(i-3)(j-3) != oppColor)
-          value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //x-0-0-0
+        if (board(i - 1)(j - 1) == actColor && board(i - 2)(j - 2) == actColor && board(i - 3)(j - 3) == actColor)
+          value + {
+            if (actColor == YELLOW) VALUE4 else BADVALUE4
+          } //x-1-1-1
+        else if (board(i - 1)(j - 1) == actColor && board(i - 2)(j - 2) == actColor && board(i - 3)(j - 3) == 0)
+          value + {
+            if (actColor == YELLOW) VALUE3 else BADVALUE3
+          } //x-1-1-0
+        else if (board(i - 1)(j - 1) == actColor && board(i - 2)(j - 2) == 0 && board(i - 3)(j - 3) != oppColor)
+          value + {
+            if (actColor == YELLOW) VALUE2 else BADVALUE2
+          } //x-1-0-0
+        else if (board(i - 1)(j - 1) == 0 && board(i - 2)(j - 2) != oppColor && board(i - 3)(j - 3) != oppColor)
+          value + {
+            if (actColor == YELLOW) VALUE1 else BADVALUE1
+          } //x-0-0-0
         else value
       }
       else value
@@ -320,16 +344,24 @@ object AI {
   }
 
   def vertical(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
-    if(j > 2) //vertical
+    if (j > 2) //vertical
     {
-      if(board(i)(j-1) == 0)
-        value + {if(actColor == YELLOW) VALUE1 else BADVALUE1} //1s up
-      else if(board(i)(j-1) == actColor && board(i)(j-2) == 0)
-        value + {if(actColor == YELLOW) VALUE2 else BADVALUE2} //2s up
-      else if(board(i)(j-1) == actColor && board(i)(j-2) == actColor && board(i)(j-3) == 0)
-        value + {if(actColor == YELLOW) VALUE3 else BADVALUE3} //3s up
-      else if(board(i)(j-1) == actColor && board(i)(j-2) == actColor && board(i)(j-3) == actColor)
-        value + {if(actColor == YELLOW) VALUE4 else BADVALUE4} //4s up
+      if (board(i)(j - 1) == 0)
+        value + {
+          if (actColor == YELLOW) VALUE1 else BADVALUE1
+        } //1s up
+      else if (board(i)(j - 1) == actColor && board(i)(j - 2) == 0)
+        value + {
+          if (actColor == YELLOW) VALUE2 else BADVALUE2
+        } //2s up
+      else if (board(i)(j - 1) == actColor && board(i)(j - 2) == actColor && board(i)(j - 3) == 0)
+        value + {
+          if (actColor == YELLOW) VALUE3 else BADVALUE3
+        } //3s up
+      else if (board(i)(j - 1) == actColor && board(i)(j - 2) == actColor && board(i)(j - 3) == actColor)
+        value + {
+          if (actColor == YELLOW) VALUE4 else BADVALUE4
+        } //4s up
       else value
     }
     else value
@@ -337,19 +369,20 @@ object AI {
 
   def evaluate(board: Array[Array[Int]]): Long = {
     val value: Long = 0L
-
     @tailrec
     def evaluateRec(board: Array[Array[Int]], value: Long, i: Int): Long = {
-      if(i >= WIDTH)
+      if (i >= WIDTH)
         value
       else {
         @tailrec
         def evaluateRecJ(board: Array[Array[Int]], value: Long, j: Int): Long = {
-          if(j < 0 || board(i)(j) == NEUTRAL)
+          if (j < 0 || board(i)(j) == NEUTRAL)
             value
-          else{
+          else {
             val actColor = board(i)(j)
-            val oppColor = {if (actColor == RED) YELLOW else RED}
+            val oppColor = {
+              if (actColor == RED) YELLOW else RED
+            }
 
             val horizontalValue1 = horizontal1(board, value, i, j, actColor, oppColor)
             val upRightValue1 = upRight1(board, horizontalValue1, i, j, actColor, oppColor)
@@ -372,13 +405,11 @@ object AI {
             evaluateRecJ(board, verticalValue, j - 1)
           }
         }
-        val valueJ = evaluateRecJ(board, value, HEIGHT-1)
+        val valueJ = evaluateRecJ(board, value, HEIGHT - 1)
         evaluateRec(board, valueJ, i + 1)
       }
     }
     evaluateRec(board, value, 0)
   }
-
-
 }
 

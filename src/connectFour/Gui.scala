@@ -9,7 +9,7 @@ object Gui {
       println(" ")
     }
 
-    val printBoard = Game.board.map(_.map{
+    val printBoard = Game.board.map(_.map {
       case Game.RED => "R"
       case Game.YELLOW => "Y"
       case Game.NEUTRAL => "0"
@@ -17,7 +17,7 @@ object Gui {
 
     for (j <- 0 until Game.HEIGHT) {
       for (i <- 0 until Game.WIDTH)
-          print(printBoard(i)(j) + "\t")
+        print(printBoard(i)(j) + "\t")
       println(" ")
     }
 
