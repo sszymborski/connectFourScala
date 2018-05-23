@@ -1,6 +1,6 @@
 package connectFour
 
-import connectFour.Game.{HEIGHT, WIDTH}
+import connectFour.Game._
 
 object Gui {
 
@@ -11,10 +11,10 @@ object Gui {
       println(" ")
     }
 
-    val printBoard = Game.board.map(_.map {
-      case Game.RED => "R"
-      case Game.YELLOW => "Y"
-      case Game.NEUTRAL => "-"
+    val printBoard = board.map(_.map {
+      case RED => "R"
+      case YELLOW => "Y"
+      case NEUTRAL => "-"
     })
 
     for (j <- 0 until HEIGHT) {
@@ -31,7 +31,7 @@ object Gui {
   }
 
   def getInput: Int = {
-    println("Which column you choose? [0-6]")
+    println("Which column do you choose? [0-6]")
     val in = scala.io.StdIn.readInt()
     if (in < 0 || in > 6)
       getInput

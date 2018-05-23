@@ -44,6 +44,7 @@ object AI {
       case NEUTRAL => 1
       case _ => 0
     }.sum
+
     if (currDepth == 0 || freeSpace == 0) { //if end of searching
       evaluate(board)
     }
