@@ -2,6 +2,11 @@ package connectFour
 
 import scala.annotation.tailrec
 
+/**
+  * Case class with methods implementing all functions of AI player, using min-max algorithm with alpha-beta pruning.
+  *
+  * @param depth depth of the AI's search tree; it represents number of moves AI is able to predict
+  */
 case class AI(depth: Int) {
   val RED: Int = Game.RED
   val YELLOW: Int = Game.YELLOW
@@ -22,6 +27,11 @@ case class AI(depth: Int) {
 
   def gravity(board: Array[Array[Int]], column: Int) = Game.gravity(board, column)
 
+  /**
+    * Function starting min-max algorithm in order to choose the best move for AI to make.
+    *
+    * @return number of column AI wants to place its puck in
+    */
   def makeMove(): Int = {
     val alpha = -infinity
     val results = for {
@@ -39,6 +49,16 @@ case class AI(depth: Int) {
     results.indexOf(results.max)
   }
 
+  /**
+    * Main recursive function for min-max algorithm with alpha-beta pruning, called for consecutive tree nodes.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param ifAImoves value informing whether it is AI's move or player's
+    * @param currDepth number of tree layers left to consider
+    * @param alpha alpha variable of min-max algorithm used in alpha-beta pruning
+    * @param beta beta variable of min-max algorithm used in alpha-beta pruning
+    * @return number representing evaluated current state of board
+    */
   def alphabeta(board: Array[Array[Int]], ifAImoves: Boolean, currDepth: Int, alpha: Long, beta: Long): Long = {
     val freeSpace = {
       for {
@@ -72,6 +92,15 @@ case class AI(depth: Int) {
     }
   }
 
+  /**
+    * Function making next AI's predicted move, called by alphabeta() in turns with movePlayer().
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param currDepth number of tree layers left to consider
+    * @param alpha alpha variable of min-max algorithm used in alpha-beta pruning
+    * @param beta beta variable of min-max algorithm used in alpha-beta pruning
+    * @return number representing evaluated current state of board
+    */
   def moveAI(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long): Long = {
     @tailrec
     def moveAIrec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
@@ -88,6 +117,15 @@ case class AI(depth: Int) {
     moveAIrec(board, currDepth, alpha, beta, WIDTH - 1)
   }
 
+  /**
+    * Function making next player's predicted move, called by alphabeta() in turns with moveAI().
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param currDepth number of tree layers left to consider
+    * @param alpha alpha variable of min-max algorithm used in alpha-beta pruning
+    * @param beta beta variable of min-max algorithm used in alpha-beta pruning
+    * @return number representing evaluated current state of board
+    */
   def movePlayer(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long): Long = {
     @tailrec
     def movePlayerRec(board: Array[Array[Int]], currDepth: Int, alpha: Long, beta: Long, iter: Int): Long = {
@@ -104,6 +142,17 @@ case class AI(depth: Int) {
     movePlayerRec(board, currDepth, alpha, beta, WIDTH - 1)
   }
 
+  /**
+    * Function summing points for horizontally aligned pucks in a pattern "x - ? - ? - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def horizontal1(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 3) {
       if (board(i + 1)(j) == actColor && board(i + 2)(j) == actColor && board(i + 3)(j) == actColor)
@@ -128,6 +177,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-upwards aligned pucks in a pattern "x - ? - ? - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def upRight1(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if ((i < WIDTH - 3) && j > 2) {
       if (board(i + 1)(j - 1) == actColor && board(i + 2)(j - 2) == actColor && board(i + 3)(j - 3) == actColor)
@@ -151,6 +211,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-downwards aligned pucks in a pattern "x - ? - ? - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def downRight1(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if ((i < WIDTH - 3) && j < HEIGHT - 3) //down-right x-0-0-0
     {
@@ -163,6 +234,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for horizontally aligned pucks in a pattern "? - x - ? - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def horizontal2(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 2 && i > 0) //horizontal 0-x-?-?
     {
@@ -183,6 +265,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-upwards aligned pucks in a pattern "? - x - ? - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def upRight2(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 2 && i > 0) //horizontal 0-x-?-?
     {
@@ -207,6 +300,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-downwards aligned pucks in a pattern "? - x - ? - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def downRight2(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 2 && i > 0) //horizontal 0-x-?-?
     {
@@ -227,6 +331,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for horizontally aligned pucks in a pattern "? - ? - x - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def horizontal3(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 1 && i > 1) //horizontal 0-0-x-?
     {
@@ -243,6 +358,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-upwards aligned pucks in a pattern "? - ? - x - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def upRight3(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 1 && i > 1) //horizontal 0-0-x-?
     {
@@ -263,6 +389,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-downwards aligned pucks in a pattern "? - ? - x - ?", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def downRight3(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i < WIDTH - 1 && i > 1) //horizontal 0-0-x-?
     {
@@ -287,6 +424,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for horizontally aligned pucks in a pattern "? - ? - ? - x", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def horizontal4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i > 2) //horizontal 0-0-0-x
     {
@@ -299,6 +447,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-upwards aligned pucks in a pattern "? - ? - ? - x", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def upRight4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i > 2) //horizontal 0-0-0-x
     {
@@ -315,6 +474,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for diagonally-downwards aligned pucks in a pattern "? - ? - ? - x", where "x" means currently considered puck and "?" neighbouring aligned fields.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def downRight4(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (i > 2) //horizontal 0-0-0-x
     {
@@ -343,6 +513,17 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Function summing points for vertically aligned pucks.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @param value sum of points counted so far
+    * @param i number of column of currently considered puck
+    * @param j number of row of currently considered puck
+    * @param actColor color of currently considered puck
+    * @param oppColor color of actColor puck's opponent
+    * @return sum of value parameter and points for currently considered alignment of pucks
+    */
   def vertical(board: Array[Array[Int]], value: Long, i: Int, j: Int, actColor: Int, oppColor: Int): Long = {
     if (j > 2) //vertical
     {
@@ -367,6 +548,12 @@ case class AI(depth: Int) {
     else value
   }
 
+  /**
+    * Heuristic function calculating numerical value of current layout of pucks.
+    *
+    * @param board two-dimensional array containing current layout of pucks
+    * @return number representing evaluated current state of board
+    */
   def evaluate(board: Array[Array[Int]]): Long = {
     val value: Long = 0L
 
