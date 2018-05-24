@@ -108,7 +108,7 @@ object Game extends App {
   }
 
   def makeMove(): Unit = {
-    val column = Gui.getInput
+    val column = Gui.getInputColumn
     val row = gravity(board, column)
     if (row < 0)
       makeMove()
@@ -116,15 +116,17 @@ object Game extends App {
       board(column)(row) = RED
   }
 
-  def AImakeMove(): Unit = {
-    val column = AI.makeMove()
+  def AImakeMove(ai: AI): Unit = {
+    val column = ai.makeMove()
     val row = gravity(board, column)
     if (row < 0)
-      AImakeMove()
+      AImakeMove(ai)
     else {
       board(column)(row) = YELLOW
     }
   }
+
+  val ai: AI = AI(Gui.getInputDepth)
 
   Gui.display()
 
@@ -133,7 +135,7 @@ object Game extends App {
       makeMove()
       Gui.display()
       if (checkWin(board, endCheck = true) != NEUTRAL) break
-      AImakeMove()
+      AImakeMove(ai)
       Gui.display()
       if (checkWin(board, endCheck = true) != NEUTRAL) break
     }

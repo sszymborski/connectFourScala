@@ -30,11 +30,20 @@ object Gui {
     }
   }
 
-  def getInput: Int = {
+  def getInputColumn: Int = {
     println("Which column do you choose? [0-6]")
     val in = scala.io.StdIn.readInt()
     if (in < 0 || in > 6)
-      getInput
+      getInputColumn
+    else
+      in
+  }
+
+  def getInputDepth: Int = {
+    println("Choose depth of AI's search tree: ")
+    val in = scala.io.StdIn.readInt()
+    if (in < 1)
+      getInputDepth
     else
       in
   }

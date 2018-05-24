@@ -2,13 +2,12 @@ package connectFour
 
 import scala.annotation.tailrec
 
-object AI {
+case class AI(depth: Int) {
   val RED: Int = Game.RED
   val YELLOW: Int = Game.YELLOW
   val NEUTRAL: Int = Game.NEUTRAL
   val WIDTH: Int = Game.WIDTH
   val HEIGHT: Int = Game.HEIGHT
-  val depth: Int = 5
   val infinity: Long = 1000000000L
   val VALUE4: Long = 1000L
   val VALUE3: Long = 100L
@@ -380,21 +379,21 @@ object AI {
             val oppColor = {
               if (actColor == RED) YELLOW else RED
             }
-            val horizontalValue1 = horizontal1(board, value, i, j, actColor, oppColor)
-            val upRightValue1 = upRight1(board, horizontalValue1, i, j, actColor, oppColor)
-            val downRightValue1 = downRight1(board, upRightValue1, i, j, actColor, oppColor)
+            val horizontalValue1 = horizontal1(board, value, i, j, actColor, oppColor)            //x-?-?-?
+            val upRightValue1 = upRight1(board, horizontalValue1, i, j, actColor, oppColor)       //x-?-?-?
+            val downRightValue1 = downRight1(board, upRightValue1, i, j, actColor, oppColor)      //x-?-?-?
 
-            val horizontalValue2 = horizontal2(board, downRightValue1, i, j, actColor, oppColor)
-            val upRightValue2 = upRight2(board, horizontalValue2, i, j, actColor, oppColor)
-            val downRightValue2 = downRight2(board, upRightValue2, i, j, actColor, oppColor)
+            val horizontalValue2 = horizontal2(board, downRightValue1, i, j, actColor, oppColor)  //?-x-?-?
+            val upRightValue2 = upRight2(board, horizontalValue2, i, j, actColor, oppColor)       //?-x-?-?
+            val downRightValue2 = downRight2(board, upRightValue2, i, j, actColor, oppColor)      //?-x-?-?
 
-            val horizontalValue3 = horizontal3(board, downRightValue2, i, j, actColor, oppColor)
-            val upRightValue3 = upRight3(board, horizontalValue3, i, j, actColor, oppColor)
-            val downRightValue3 = downRight3(board, upRightValue3, i, j, actColor, oppColor)
+            val horizontalValue3 = horizontal3(board, downRightValue2, i, j, actColor, oppColor)  //?-?-x-?
+            val upRightValue3 = upRight3(board, horizontalValue3, i, j, actColor, oppColor)       //?-?-x-?
+            val downRightValue3 = downRight3(board, upRightValue3, i, j, actColor, oppColor)      //?-?-x-?
 
-            val horizontalValue4 = horizontal4(board, downRightValue3, i, j, actColor, oppColor)
-            val upRightValue4 = upRight4(board, horizontalValue4, i, j, actColor, oppColor)
-            val downRightValue4 = downRight4(board, upRightValue4, i, j, actColor, oppColor)
+            val horizontalValue4 = horizontal4(board, downRightValue3, i, j, actColor, oppColor)  //?-?-?-x
+            val upRightValue4 = upRight4(board, horizontalValue4, i, j, actColor, oppColor)       //?-?-?-x
+            val downRightValue4 = downRight4(board, upRightValue4, i, j, actColor, oppColor)      //?-?-?-x
 
             val verticalValue = vertical(board, downRightValue4, i, j, actColor, oppColor)
 
