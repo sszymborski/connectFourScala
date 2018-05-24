@@ -30,6 +30,14 @@ object Gui {
     }
   }
 
+  def showWinMessage(a1: Int, a2: Int, b1: Int, b2: Int, c1: Int, c2: Int, d1: Int, d2: Int): Unit = {
+    println("Win by " + a1 + "x" + a2 + ", " + b1 + "x" + b2 + ", " + c1 + "x" + c2 + ", " + d1 + "x" + d2 + ", ")
+  }
+
+  def showDrawMessage(): Unit = {
+    println("Draw")
+  }
+
   def getInputColumn: Int = {
     println("Which column do you choose? [0-6]")
     val in = scala.io.StdIn.readInt()
@@ -47,5 +55,4 @@ object Gui {
     else
       in
   }
-
 }

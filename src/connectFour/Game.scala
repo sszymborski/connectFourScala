@@ -19,7 +19,7 @@ object Game extends App {
         val actual = table(i)(j)
         if ((actual == table(i)(j - 1)) && (actual == table(i)(j - 2)) && (actual == table(i)(j - 3))) {
           if (endCheck)
-            println("Win by " + i + "x" + j + ", " + i + "x" + (j - 1) + ", " + i + "x" + (j - 2) + ", " + i + "x" + (j - 3) + ", ")
+            Gui.showWinMessage(i, j, i, j - 1, i, j - 2, i, j - 3)
           1
         }
         else
@@ -39,7 +39,7 @@ object Game extends App {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j) && actual == table(i + 2)(j) && actual == table(i + 3)(j)) {
           if (endCheck)
-            println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + j + ", " + (i + 2) + "x" + j + ", " + (i + 3) + "x" + j + ", ")
+            Gui.showWinMessage(i, j, i + 1, j, i + 2, j, i + 3, j)
           1
         }
         else
@@ -59,7 +59,7 @@ object Game extends App {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j - 1) && actual == table(i + 2)(j - 2) && actual == table(i + 3)(j - 3)) {
           if (endCheck)
-            println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j - 1) + ", " + (i + 2) + "x" + (j - 2) + ", " + (i + 3) + "x" + (j - 3) + ", ")
+            Gui.showWinMessage(i, j, i + 1, j - 1, i + 2, j - 2, i + 3, j - 3)
           1
         }
         else
@@ -79,7 +79,7 @@ object Game extends App {
         val actual = table(i)(j)
         if (actual == table(i + 1)(j + 1) && actual == table(i + 2)(j + 2) && actual == table(i + 3)(j + 3)) {
           if (endCheck)
-            println("Win by " + i + "x" + j + ", " + (i + 1) + "x" + (j + 1) + ", " + (i + 2) + "x" + (j + 2) + ", " + (i + 3) + "x" + (j + 3) + ", ")
+            Gui.showWinMessage(i, j, i + 1, j + 1, i + 2, j + 1, i + 3, j + 3)
           1
         }
         else
@@ -92,9 +92,11 @@ object Game extends App {
   }
 
   def checkWin(table: Array[Array[Int]], endCheck: Boolean = false): Int = {
-    if (checkVertically(table, RED, endCheck) || checkHorizontally(table, RED, endCheck) || checkDiagonallyDownRight(table, RED, endCheck) || checkDiagonallyUpRight(table, RED, endCheck))
+    if (checkVertically(table, RED, endCheck) || checkHorizontally(table, RED, endCheck)
+      || checkDiagonallyDownRight(table, RED, endCheck) || checkDiagonallyUpRight(table, RED, endCheck))
       RED
-    else if (checkVertically(table, YELLOW, endCheck) || checkHorizontally(table, YELLOW, endCheck) || checkDiagonallyDownRight(table, YELLOW, endCheck) || checkDiagonallyUpRight(table, YELLOW, endCheck))
+    else if (checkVertically(table, YELLOW, endCheck) || checkHorizontally(table, YELLOW, endCheck)
+      || checkDiagonallyDownRight(table, YELLOW, endCheck) || checkDiagonallyUpRight(table, YELLOW, endCheck))
       YELLOW
     else
       NEUTRAL
@@ -121,9 +123,8 @@ object Game extends App {
     val row = gravity(board, column)
     if (row < 0)
       AImakeMove(ai)
-    else {
+    else
       board(column)(row) = YELLOW
-    }
   }
 
   val ai: AI = AI(Gui.getInputDepth)
@@ -139,6 +140,7 @@ object Game extends App {
       Gui.display()
       if (checkWin(board, endCheck = true) != NEUTRAL) break
     }
+    Gui.showDrawMessage()
   }
 }
 

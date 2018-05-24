@@ -25,11 +25,16 @@ case class AI(depth: Int) {
   def makeMove(): Int = {
     val alpha = -infinity
     val results = for {
-      i <- 0 until WIDTH if Game.board(i)(0) == NEUTRAL
+      i <- 0 until WIDTH
     } yield {
-      val table = Game.board.map(_.clone())
-      table(i).update(gravity(table, i), YELLOW)
-      alphabeta(table, false, depth - 1, alpha, infinity)
+      if(Game.board(i)(0) == NEUTRAL) {
+        val table = Game.board.map(_.clone())
+        table(i).update(gravity(table, i), YELLOW)
+        alphabeta(table, ifAImoves = false, depth - 1, alpha, infinity)
+      }
+      else{
+        -infinity
+      }
     }
     results.indexOf(results.max)
   }
@@ -75,7 +80,7 @@ case class AI(depth: Int) {
       else {
         val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), YELLOW)
-        val alphaResult = alphabeta(newBoard, false, currDepth - 1, alpha, beta)
+        val alphaResult = alphabeta(newBoard, ifAImoves = false, currDepth - 1, alpha, beta)
         moveAIrec(board, currDepth, math.max(alpha, alphaResult), beta, iter - 1)
       }
     }
@@ -91,7 +96,7 @@ case class AI(depth: Int) {
       else {
         val newBoard = board.map(_.clone())
         newBoard(iter).update(gravity(newBoard, iter), RED)
-        val betaResult = alphabeta(newBoard, true, currDepth - 1, alpha, beta)
+        val betaResult = alphabeta(newBoard, ifAImoves = true, currDepth - 1, alpha, beta)
         movePlayerRec(board, currDepth, alpha, math.min(beta, betaResult), iter - 1)
       }
     }
@@ -400,12 +405,10 @@ case class AI(depth: Int) {
             evaluateRecJ(board, verticalValue, j - 1)
           }
         }
-
         val valueJ = evaluateRecJ(board, value, HEIGHT - 1)
         evaluateRec(board, valueJ, i + 1)
       }
     }
-
     evaluateRec(board, value, 0)
   }
 }
